@@ -1,15 +1,16 @@
-// De dentro do objeto require() eu quero apenas o select
-const { select, input } = require('@inquirer/prompts')
+// De dentro do objeto require() eu quero select que mostra uma lista para nós, o input pega informações de usuário
+// o checkbox
+const { select, input, checkbox } = require('@inquirer/prompts')
 
 let meta = {
-    value: "tomar 3L de água",
+    value: "Tomar 3L de água.",
     checked: false
 }
 
 let metas = [meta];
 
 // Temos uma função arrow assíncrona que faz o trabalho de cadastrar uma nova meta ao sistema
-const cadastrarMeta = async () =>{
+const cadastrarMeta = async () => {
     // a variável constante vai esperar que o usuário informe a meta a ser cadastrada
     const meta = await input({message: "Digite a meta:"})
     
@@ -25,6 +26,41 @@ const cadastrarMeta = async () =>{
         value: meta,
         checked: false
     })
+}
+
+// Temos uma funcão arrow assíncrona que lista para nós as metas criadas no projeto
+const listarMetas= async () => {
+    const respostas = await checkbox({
+        message: "Use SETAS para mudar de meta, ESPAÇO para marcar ou desmarcar, ENTER para finalizar etapa.",
+        choices: [...metas],
+        instructions: false
+    })
+
+    if(respostas.length == 0){
+        console.log("Nenhuma meta selecionada.");
+        return
+    }
+
+    // essa situação fará com que todas as metas sejam desmarcadas, mas quando elas entrarem na situação abaixo serão marcadas
+    // novamente.
+    metas.forEach((m)=>{
+        m.checked = false;
+    })
+
+    // o forEach significa para cada. Como respostas está recebendo cada meta cadastrada, o forEach vai analisar cada uma
+    // e executar a função que faz com que haja uma comparação entre a primeira (resposta) meta cadastrada no sistema
+    // com a meta que o usuário selecionou em resposta, para saber se vai ser ou não desmarcada usamos outra função chamada
+    // find() que retornará em verdadeiro ou falso se a resposta condiz com uma meta em metas. Ela não encontrou a meta com o
+    // nome passado em respostas.
+    respostas.forEach((resposta) => {
+        const meta = metas.find((m) => {
+            return m.value == resposta;
+        })
+
+        meta.checked = true
+    })
+
+    console.log("Meta(s) marcada(s) como concluída(s).");
 }
 
 // função arrow assíncrona é implementada dentro de uma variável constante
@@ -57,10 +93,9 @@ const test = async () => {
         switch(opcao){
             case "cadastrar":
                 await cadastrarMeta();
-                console.log(metas);
                 break
             case "listar":
-                console.log("listar");
+                await listarMetas();
                 break
             case "sair":
                 console.log("Até a próxima! :)");
