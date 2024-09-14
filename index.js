@@ -29,7 +29,7 @@ const cadastrarMeta = async () => {
 }
 
 // Temos uma funcão arrow assíncrona que lista para nós as metas criadas no projeto
-const listarMetas= async () => {
+const listarMetas = async () => {
     const respostas = await checkbox({
         message: "Use SETAS para mudar de meta, ESPAÇO para marcar ou desmarcar, ENTER para finalizar etapa.",
         choices: [...metas],
@@ -63,6 +63,23 @@ const listarMetas= async () => {
     console.log("Meta(s) marcada(s) como concluída(s).");
 }
 
+// Temos uma função arrow assíncrona que vai filtrar apenas as metas que retornam verdadeiro no checked
+const metasRealizadas = async () =>{
+    const realizadas = metas.filter((meta) =>{
+        return meta.checked;
+    })
+
+    if(realizadas.length == 0){
+        console.log("Não existem metas Realizadas :(");
+        return;
+    }
+
+    await select({
+        message:"Metas Realizadas",
+        choices: [...realizadas]
+    })
+}
+
 // função arrow assíncrona é implementada dentro de uma variável constante
 const test = async () => {
 
@@ -83,6 +100,10 @@ const test = async () => {
                         value: "listar"
                     },
                     {
+                        name: "Metas ralizadas",
+                        value: "realizadas"
+                    },
+                    {
                         name: "Sair",
                         value: "sair"
                     }
@@ -97,6 +118,9 @@ const test = async () => {
             case "listar":
                 await listarMetas();
                 break
+            case "realizadas":
+                await metasRealizadas();
+                return
             case "sair":
                 console.log("Até a próxima! :)");
                 return
