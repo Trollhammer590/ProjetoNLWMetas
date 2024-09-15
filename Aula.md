@@ -24,7 +24,7 @@ Como um lego, você irá utilizar peças pra criar algoritmos, ou seja, para res
 ## Escopos e Variáveis
 
 - [x] Variáveis locais e globais;
-- [x] Constantes;
+- [x] Constantes.
 
 ## Tipos de dados
 
@@ -42,8 +42,8 @@ Como um lego, você irá utilizar peças pra criar algoritmos, ou seja, para res
 
 ### Arrays:
 
-- [x] Uma lista que contém qualquer tipo de dados.
-- [x] Método de array; push(), find(), forEach(), filter(), map() :HOF (Higher Order Functions)
+- [x] Uma lista que contém qualquer tipo de dados;
+- [x] Método de array; push(), find(), forEach(), filter(), map() :HOF (Higher Order Functions).
 
 ### Objetos:
 
@@ -59,17 +59,24 @@ Como um lego, você irá utilizar peças pra criar algoritmos, ou seja, para res
 
 # Estrutura de repetição
 
-- [x] While
+- [x] While.
 
 # Condicionais
 
-- [x] Switch
+- [x] Switch.
 
 ## Módulos em Node.js
 
-- [x] Importação de módulos (require, commonJS)
-- [x] Biblioteca 'inquirer' para criar prompts interativos
+- [x] Importação de módulos (require, commonJS);
+- [x] Biblioteca 'inquirer' para criar prompts interativos;
+- [x] FS (File System).
+
+## JSON
+
+- [x] JavaScript Object Notation ;
+- [x] JSON.parse();
+- [x] JSON.stringify().
 
 ## Programação Assíncrona e Promises:
 
-- [x] Uso de funções assíncronas (assync/await);
+- [x] Uso de funções assíncronas (assync/await).

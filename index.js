@@ -2,13 +2,28 @@
 // o checkbox
 const { select, input, checkbox } = require('@inquirer/prompts')
 
+// Pacote do node chamado File System;
+const fs = require("fs").promises;
+
 let mensagem = "Bem vindo(a) ao app de Metas."
-let meta = {
-    value: "Tomar 3L de água.",
-    checked: false
+
+let metas 
+
+// A Função carregarMetas vai tentar (try) carregar um arquivo. Caso não consiga carregar esse arquivo vai dar um erro e vai cair no catch.
+// parse vai converter os dados do Json para um array. Metas recebe esse Array.
+const carregarMetas = async () => {
+    try{
+        const dados = await fs.readFile("metas.json", "utf-8");
+        metas = JSON.parse(dados);
+    }catch(erro){
+        metas = []
+    }
 }
 
-let metas = [meta];
+// Salva as configurações da sua aplicação no arquivo JSON. A parte JSON.stringify está convertendo de JS para JSON.
+const salvarMetas = async () => {
+    await fs.writeFile("metas.json", JSON.stringify(metas, null, 2))
+}
 
 // Temos uma função arrow assíncrona que faz o trabalho de cadastrar uma nova meta ao sistema
 const cadastrarMeta = async () => {
@@ -33,6 +48,11 @@ const cadastrarMeta = async () => {
 
 // Temos uma funcão arrow assíncrona que lista para nós as metas criadas no projeto
 const listarMetas = async () => {
+    if(metas.length == 0){
+        mensagem = "Não existem metas..."
+        return
+    }
+
     const respostas = await checkbox({
         message: "Use SETAS para mudar de meta, ESPAÇO para marcar ou desmarcar, ENTER para finalizar etapa.",
         choices: [...metas],
@@ -69,6 +89,10 @@ const listarMetas = async () => {
 
 // Temos uma função arrow assíncrona que vai filtrar apenas as metas que retornam verdadeiro no checked
 const metasRealizadas = async () => {
+    if(metas.length == 0){
+        mensagem = "Não existem metas..."
+        return
+    }
     const realizadas = metas.filter((meta) =>{
         return meta.checked;
     })
@@ -87,6 +111,10 @@ const metasRealizadas = async () => {
 // A função metasAbertas vai conferir se o atributo checked de cada meta é true ou false. Para checked = false, vai ser
 // retornado meta.checked != true, trazendo um retorno verdadeiro o que faz com que entre na variável as metas não marcadas (abertas).
 const metasAbertas = async () => {
+    if(metas.length == 0){
+        mensagem = "Não existem metas..."
+        return
+    }
     const abertas = metas.filter((meta)=>{
         // o ! antes de meta.checked faz com que o valor se inverta de false para true
         return !meta.checked;
@@ -104,6 +132,11 @@ const metasAbertas = async () => {
 }
 
 const deletarMetas = async () => {
+    if(metas.length == 0){
+        mensagem = "Não existem metas..."
+        return
+    }
+    
     const metasDesmarcadas = metas.map((meta) =>{
         return {value: meta.value, checked: false}
     })
@@ -142,10 +175,12 @@ const mostrarMensagem = () =>{
 }
 
 // função arrow assíncrona é implementada dentro de uma variável constante
-const test = async () => {
+const start = async () => {
+                            await carregarMetas()
 
     // uma condição é posta caso seja verdadeira
     while(true){
+                            await salvarMetas();// esperando para salvar as metas
                             mostrarMensagem(); // vai limpar o console sempre que a aplicação for iniciada 
         // a opção await faz com que haja uma promessa de que trará uma resposta,
         // no caso abaixo o usuário fará uma seleção por meio de select das choices. 
@@ -204,4 +239,4 @@ const test = async () => {
 }
 
 // roda a função
-test()
+start()

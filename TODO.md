@@ -4,4 +4,5 @@
     - [x] metas abertas.
 - [x] Marcar/Desmarcar metas;
 - [x] Remover metas;
-- [x] Sistema de mensagens.
+- [x] Sistema de mensagens;
+- [x] Persistir Dados: Sistema de Carregar e Salvar metas.
