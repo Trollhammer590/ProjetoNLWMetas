@@ -64,7 +64,7 @@ const listarMetas = async () => {
 }
 
 // Temos uma função arrow assíncrona que vai filtrar apenas as metas que retornam verdadeiro no checked
-const metasRealizadas = async () =>{
+const metasRealizadas = async () => {
     const realizadas = metas.filter((meta) =>{
         return meta.checked;
     })
@@ -75,14 +75,14 @@ const metasRealizadas = async () =>{
     }
 
     await select({
-        message:"Metas Realizadas " +metas.length,
+        message:"Metas Realizadas: " +metas.length,
         choices: [...realizadas]
     })
 }
 
 // A função metasAbertas vai conferir se o atributo checked de cada meta é true ou false. Para checked = false, vai ser
 // retornado meta.checked != true, trazendo um retorno verdadeiro o que faz com que entre na variável as metas não marcadas (abertas).
-const metasAbertas = async () =>{
+const metasAbertas = async () => {
     const abertas = metas.filter((meta)=>{
         // o ! antes de meta.checked faz com que o valor se inverta de false para true
         return !meta.checked;
@@ -94,9 +94,36 @@ const metasAbertas = async () =>{
     }
 
     await select({
-        message: "Metas Abertas " +metas.length,
+        message: "Metas Abertas: " +metas.length,
         choices:[...abertas]
     })
+}
+
+const deletarMetas = async () => {
+    const metasDesmarcadas = metas.map((meta) =>{
+        return {value: meta.value, checked: false}
+    })
+
+    const itensADeletar = await checkbox({
+        message: "Selecione com ESPAÇO um item para deletar.",
+        choices: [...metasDesmarcadas],
+        instructions: false
+    })
+
+    if(itensADeletar.length == 0){
+        console.log("Nenhum item para deletar.");
+        return
+    }
+
+    // nessa função está sendo analisaco cada item e passado para um filtro que diz que caso o valor de meta.value seja diferente
+    // de item, vai ser armazenado em metas. E só vai ficar aquilo que foi selecionado.
+    itensADeletar.forEach((item)=>{
+        metas = metas.filter((meta)=>{
+            return meta.value != item
+        })
+    })
+
+    console.log("Meta(s) deletada(s) com sucesso!")
 }
 
 // função arrow assíncrona é implementada dentro de uma variável constante
@@ -127,6 +154,10 @@ const test = async () => {
                         value: "abertas"
                     },
                     {
+                        name: "Deletar metas",
+                        value: "deletar"
+                    },
+                    {
                         name: "Sair",
                         value: "sair"
                     }
@@ -146,6 +177,9 @@ const test = async () => {
                 break
             case "abertas":
                 await metasAbertas();
+                break
+            case "deletar":
+                    await deletarMetas();
                 break
             case "sair":
                 console.log("Até a próxima! :)");
