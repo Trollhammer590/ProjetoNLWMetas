@@ -2,6 +2,7 @@
 // o checkbox
 const { select, input, checkbox } = require('@inquirer/prompts')
 
+let mensagem = "Bem vindo(a) ao app de Metas."
 let meta = {
     value: "Tomar 3L de água.",
     checked: false
@@ -16,7 +17,7 @@ const cadastrarMeta = async () => {
     
     // se a meta for um texto vazio ele vai retornar no console que a meta não pode ser vazia e encerra a aplicação
     if(meta.length == 0){
-        console.log("A meta não pode ser vazia");
+        mensagem = "A meta não pode ser vazia";
         return    
     }
 
@@ -26,6 +27,8 @@ const cadastrarMeta = async () => {
         value: meta,
         checked: false
     })
+
+    mensagem ="Meta cadastrada com sucesso!"
 }
 
 // Temos uma funcão arrow assíncrona que lista para nós as metas criadas no projeto
@@ -37,7 +40,7 @@ const listarMetas = async () => {
     })
 
     if(respostas.length == 0){
-        console.log("Nenhuma meta selecionada.");
+        mensagem ="Nenhuma meta selecionada.";
         return
     }
 
@@ -60,7 +63,8 @@ const listarMetas = async () => {
         meta.checked = true
     })
 
-    console.log("Meta(s) marcada(s) como concluída(s).");
+    
+    mensagem ="Meta(s) marcada(s) como concluída(s).";
 }
 
 // Temos uma função arrow assíncrona que vai filtrar apenas as metas que retornam verdadeiro no checked
@@ -70,7 +74,7 @@ const metasRealizadas = async () => {
     })
 
     if(realizadas.length == 0){
-        console.log("Não existem metas Realizadas :(");
+        let mensagem = "Não existem metas Realizadas :(";
         return;
     }
 
@@ -89,7 +93,7 @@ const metasAbertas = async () => {
     })
 
     if(abertas.length == 0){
-        console.log("Parabéns! Não há metas abertas :)");
+        let mensagem = "Parabéns! Não há metas abertas :)";
         return;
     }
 
@@ -111,7 +115,7 @@ const deletarMetas = async () => {
     })
 
     if(itensADeletar.length == 0){
-        console.log("Nenhum item para deletar.");
+        mensagem = "Nenhum item para deletar.";
         return
     }
 
@@ -123,7 +127,18 @@ const deletarMetas = async () => {
         })
     })
 
-    console.log("Meta(s) deletada(s) com sucesso!")
+    mensagem = "Meta(s) deletada(s) com sucesso!"
+}
+
+// vai limpar o console sempre que a aplicação for iniciada
+const mostrarMensagem = () =>{
+    console.clear();
+
+    if(mensagem != ""){
+        console.log(mensagem)
+        console.log("")
+        mensagem = ""
+    }
 }
 
 // função arrow assíncrona é implementada dentro de uma variável constante
@@ -131,7 +146,7 @@ const test = async () => {
 
     // uma condição é posta caso seja verdadeira
     while(true){
-
+                            mostrarMensagem(); // vai limpar o console sempre que a aplicação for iniciada 
         // a opção await faz com que haja uma promessa de que trará uma resposta,
         // no caso abaixo o usuário fará uma seleção por meio de select das choices. 
         const opcao = await select({

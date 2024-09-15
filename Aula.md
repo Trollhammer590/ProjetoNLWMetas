@@ -43,7 +43,7 @@ Como um lego, você irá utilizar peças pra criar algoritmos, ou seja, para res
 ### Arrays:
 
 - [x] Uma lista que contém qualquer tipo de dados.
-- [x] Método de array; push(), find(), forEach(), filter() :HOF (Higher Order Functions)
+- [x] Método de array; push(), find(), forEach(), filter(), map() :HOF (Higher Order Functions)
 
 ### Objetos:
 
