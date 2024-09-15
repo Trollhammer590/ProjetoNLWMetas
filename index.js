@@ -75,8 +75,27 @@ const metasRealizadas = async () =>{
     }
 
     await select({
-        message:"Metas Realizadas",
+        message:"Metas Realizadas " +metas.length,
         choices: [...realizadas]
+    })
+}
+
+// A função metasAbertas vai conferir se o atributo checked de cada meta é true ou false. Para checked = false, vai ser
+// retornado meta.checked != true, trazendo um retorno verdadeiro o que faz com que entre na variável as metas não marcadas (abertas).
+const metasAbertas = async () =>{
+    const abertas = metas.filter((meta)=>{
+        // o ! antes de meta.checked faz com que o valor se inverta de false para true
+        return !meta.checked;
+    })
+
+    if(abertas.length == 0){
+        console.log("Parabéns! Não há metas abertas :)");
+        return;
+    }
+
+    await select({
+        message: "Metas Abertas " +metas.length,
+        choices:[...abertas]
     })
 }
 
@@ -100,8 +119,12 @@ const test = async () => {
                         value: "listar"
                     },
                     {
-                        name: "Metas ralizadas",
+                        name: "Metas realizadas",
                         value: "realizadas"
+                    },
+                    {
+                        name: "Metas abertas",
+                        value: "abertas"
                     },
                     {
                         name: "Sair",
@@ -120,7 +143,10 @@ const test = async () => {
                 break
             case "realizadas":
                 await metasRealizadas();
-                return
+                break
+            case "abertas":
+                await metasAbertas();
+                break
             case "sair":
                 console.log("Até a próxima! :)");
                 return
